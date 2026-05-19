@@ -1,0 +1,7 @@
+.display-font {
+  font-family: 'Bricolage Grotesque', system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
