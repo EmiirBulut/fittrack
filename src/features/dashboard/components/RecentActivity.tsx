@@ -1,8 +1,8 @@
 import { Card, List, Typography } from 'antd';
-import type { WorkoutSession } from '../../../types/workout';
+import type { WorkoutSessionWithWorkout } from '../../../types/workout';
 
 interface Props {
-  sessions: WorkoutSession[];
+  sessions: WorkoutSessionWithWorkout[];
   isLoading?: boolean;
 }
 
@@ -40,7 +40,11 @@ const RecentActivity = ({ sessions, isLoading }: Props) => {
               }
             >
               <List.Item.Meta
-                title={<Typography.Text strong>Antrenman</Typography.Text>}
+                title={
+                  <Typography.Text strong>
+                    {session.workout?.name ?? 'Silinmiş Antrenman'}
+                  </Typography.Text>
+                }
                 description={formatDate(session.completed_at)}
               />
             </List.Item>

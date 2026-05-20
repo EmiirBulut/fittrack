@@ -4,20 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import PageHeader from '../../components/ui/PageHeader';
 import WorkoutCard from './components/WorkoutCard';
 import { useWorkouts } from './hooks/useWorkouts';
-import { useWorkoutWithSteps } from './hooks/useWorkouts';
 import { ROUTES } from '../../router/routes';
-import type { Workout } from './types';
-
-const WorkoutCardWrapper = ({ workout }: { workout: Workout }) => {
-  const { data, isLoading } = useWorkoutWithSteps(workout.id);
-  if (isLoading) return <Skeleton active />;
-  if (!data) return null;
-  return <WorkoutCard workout={data} />;
-};
 
 const WorkoutsPage = () => {
   const navigate = useNavigate();
-  const { data: workouts, isLoading, isError } = useWorkouts();
+  const { data: workouts, isLoading, isError, refetch } = useWorkouts();
 
   return (
     <>
@@ -40,6 +31,11 @@ const WorkoutsPage = () => {
           message="Antrenmanlar yüklenemedi."
           showIcon
           style={{ marginBottom: 24 }}
+          action={
+            <Button size="small" onClick={() => refetch()}>
+              Tekrar Dene
+            </Button>
+          }
         />
       )}
 
@@ -55,7 +51,7 @@ const WorkoutsPage = () => {
         <Row gutter={[16, 16]}>
           {workouts.map((workout) => (
             <Col key={workout.id} xs={24} sm={12} lg={8}>
-              <WorkoutCardWrapper workout={workout} />
+              <WorkoutCard workout={workout} />
             </Col>
           ))}
         </Row>

@@ -5,3 +5,7 @@ export interface WorkoutSession {
   completed_at: string;
   duration_seconds: number;
 }
+
+export interface WorkoutSessionWithWorkout extends WorkoutSession {
+  workout: { name: string } | null;
+}

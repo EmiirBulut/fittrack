@@ -3,7 +3,7 @@ import { QUERY_KEYS } from '../../../lib/queryKeys';
 import {
   createWorkout,
   deleteWorkout,
-  getWorkouts,
+  getWorkoutsWithSteps,
   getWorkoutWithSteps,
   updateWorkout,
 } from '../api/workoutsApi';
@@ -12,7 +12,7 @@ import type { WorkoutStepDraft } from '../types';
 export function useWorkouts() {
   return useQuery({
     queryKey: QUERY_KEYS.WORKOUTS,
-    queryFn: getWorkouts,
+    queryFn: getWorkoutsWithSteps,
   });
 }
 

@@ -1,14 +1,20 @@
 import { supabase } from '../../../lib/supabase';
 import type { Workout, WorkoutStep, WorkoutStepDraft, WorkoutWithSteps } from '../types';
 
-export async function getWorkouts(): Promise<Workout[]> {
+export async function getWorkoutsWithSteps(): Promise<WorkoutWithSteps[]> {
   const { data, error } = await supabase
     .from('workouts')
-    .select('*')
+    .select('*, steps:workout_steps(*, exercise:exercises(*))')
     .order('created_at', { ascending: false });
 
   if (error) throw new Error(error.message);
-  return data as Workout[];
+
+  return (data ?? []).map((w) => ({
+    ...w,
+    steps: ((w.steps ?? []) as WorkoutStep[]).sort(
+      (a, b) => a.order_index - b.order_index,
+    ),
+  })) as WorkoutWithSteps[];
 }
 
 export async function getWorkoutWithSteps(id: string): Promise<WorkoutWithSteps> {
@@ -35,9 +41,12 @@ export async function createWorkout(
   name: string,
   stepDrafts: WorkoutStepDraft[],
 ): Promise<Workout> {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) throw new Error('Kullanıcı oturumu bulunamadı');
+
   const { data: workout, error: workoutError } = await supabase
     .from('workouts')
-    .insert({ name })
+    .insert({ name, user_id: user.id })
     .select()
     .single();
 
