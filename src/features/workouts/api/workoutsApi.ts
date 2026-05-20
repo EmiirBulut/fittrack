@@ -41,12 +41,12 @@ export async function createWorkout(
   name: string,
   stepDrafts: WorkoutStepDraft[],
 ): Promise<Workout> {
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) throw new Error('Kullanıcı oturumu bulunamadı');
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session?.user) throw new Error('Kullanıcı oturumu bulunamadı');
 
   const { data: workout, error: workoutError } = await supabase
     .from('workouts')
-    .insert({ name, user_id: user.id })
+    .insert({ name, user_id: session.user.id })
     .select()
     .single();
 

@@ -12,12 +12,12 @@ export async function getExercises(): Promise<Exercise[]> {
 }
 
 export async function createExercise(values: ExerciseFormValues): Promise<Exercise> {
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) throw new Error('Kullanıcı oturumu bulunamadı');
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session?.user) throw new Error('Kullanıcı oturumu bulunamadı');
 
   const { data, error } = await supabase
     .from('exercises')
-    .insert({ ...values, user_id: user.id })
+    .insert({ ...values, user_id: session.user.id })
     .select()
     .single();
 

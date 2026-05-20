@@ -8,7 +8,7 @@ import { useExercises } from './hooks/useExercises';
 import type { Exercise } from './types';
 
 const ExercisesPage = () => {
-  const { data: exercises, isLoading, isError, refetch } = useExercises();
+  const { data: exercises, isLoading, isError, error, refetch } = useExercises();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [selectedExercise, setSelectedExercise] = useState<Exercise | undefined>();
 
@@ -42,6 +42,7 @@ const ExercisesPage = () => {
         <Alert
           type="error"
           message="Hareketler yüklenemedi."
+          description={error instanceof Error ? error.message : undefined}
           showIcon
           style={{ marginBottom: 24 }}
           action={
