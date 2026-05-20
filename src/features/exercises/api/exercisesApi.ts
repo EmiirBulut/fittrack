@@ -17,7 +17,13 @@ export async function createExercise(values: ExerciseFormValues): Promise<Exerci
 
   const { data, error } = await supabase
     .from('exercises')
-    .insert({ ...values, user_id: session.user.id })
+    .insert({
+      name: values.name,
+      description: values.description?.trim() || null,
+      youtube_url: values.youtube_url?.trim() || null,
+      image_url: values.image_url?.trim() || null,
+      user_id: session.user.id,
+    })
     .select()
     .single();
 
@@ -31,7 +37,12 @@ export async function updateExercise(
 ): Promise<Exercise> {
   const { data, error } = await supabase
     .from('exercises')
-    .update(values)
+    .update({
+      name: values.name,
+      description: values.description?.trim() || null,
+      youtube_url: values.youtube_url?.trim() || null,
+      image_url: values.image_url?.trim() || null,
+    })
     .eq('id', id)
     .select()
     .single();

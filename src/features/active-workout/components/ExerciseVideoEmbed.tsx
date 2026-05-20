@@ -1,5 +1,5 @@
-import { Flex } from 'antd';
-import { VideoCameraOutlined } from '@ant-design/icons';
+import { Button, Flex } from 'antd';
+import { LinkOutlined, VideoCameraOutlined } from '@ant-design/icons';
 import { getYouTubeEmbedUrl } from '../../../lib/youtubeUtils';
 
 interface Props {
@@ -17,9 +17,38 @@ const ExerciseVideoEmbed = ({ youtubeUrl, imageUrl }: Props) => {
         width="100%"
         height="300"
         title="Hareket videosu"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         allowFullScreen
         style={{ border: 'none', display: 'block', borderRadius: 8 }}
       />
+    );
+  }
+
+  if (youtubeUrl) {
+    return (
+      <Flex
+        vertical
+        justify="center"
+        align="center"
+        gap={12}
+        style={{
+          width: '100%',
+          height: 200,
+          backgroundColor: '#f0f4f0',
+          borderRadius: 8,
+        }}
+      >
+        <VideoCameraOutlined style={{ fontSize: 36, color: '#b0b0b0' }} />
+        <Button
+          icon={<LinkOutlined />}
+          href={youtubeUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          size="small"
+        >
+          YouTube'da İzle
+        </Button>
+      </Flex>
     );
   }
 
